@@ -1,0 +1,14 @@
+
+.results{
+    display: flex;
+    justify-content: space-around;
+}
+
+.results div{
+    display: flex;
+}
+
+.results div h3{
+    margin-left: 1rem;
+}
+

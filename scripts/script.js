@@ -76,11 +76,20 @@ function playRound(playerSelection, computerSelection)
 // Starts the game 
 function game()
 {
+    let playerSelection = '';
+    let buttons = document.querySelectorAll('.rps-choice');
+    buttons.forEach(button => {
+        button.addEventListener('click', (e) =>
+        {
+            console.log(e);
+            playerSelection = e.target.value;
+        });
+    });
     for(i = 0; i < 5; i++)
     {
-        const playerSelection = prompt("Choose among Rock Paper and Scissors");
-        const computerSelection = computerPlay();
-        console.log(playRound(playerSelection, computerSelection));
+        console.log(playerSelection);
+        const computerSelection = computerPlay();;
+        playRound(playerSelection, computerSelection)
     }
     finalScore();
 }
