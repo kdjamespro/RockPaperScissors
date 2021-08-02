@@ -3,6 +3,12 @@ const moves = ['Rock', 'Paper', 'Scissors'];
 let playerWins = 0;
 let computerWins = 0;
 
+// Initialize the DOM object we need to access
+const buttons = document.querySelectorAll('.rps-choice');
+const playerScore = document.querySelector('.playerScore');
+const computerScore = document.querySelector('.computerScore');
+const narration = document.querySelector('.narration');
+
 
 // Returns a random move of a computer from the set of possible moves
 function computerPlay()
@@ -79,7 +85,6 @@ function gameStart()
 {
     updateScore();
     let playerSelection = '';
-    buttons = document.querySelectorAll('.rps-choice');
     console.log(buttons);
     buttons.forEach(button => {
         button.disabled = false;
@@ -89,7 +94,7 @@ function gameStart()
             playerSelection = e.target.value;
             console.log(playerSelection);
             const computerSelection = computerPlay();;
-            playRound(playerSelection, computerSelection)
+            narration.textContent = playRound(playerSelection, computerSelection)
             updateScore();
         });
     });
@@ -98,8 +103,6 @@ function gameStart()
 // outputs the final score
 function updateScore()
 {
-    const playerScore = document.querySelector('.playerScore');
-    const computerScore = document.querySelector('.computerScore');
     playerScore.textContent = playerWins;
     computerScore.textContent = computerWins;
 }
@@ -107,4 +110,6 @@ function updateScore()
 
 
 let start = document.querySelector('.startButton');
-start.addEventListener('click', () => gameStart());
+start.addEventListener('click', () => {
+    gameStart()
+});

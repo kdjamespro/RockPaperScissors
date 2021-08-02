@@ -1,14 +1,14 @@
 
-.results{
+.scoreBoard{
     display: flex;
     justify-content: space-around;
 }
 
-.results div{
+.scoreBoard div{
     display: flex;
 }
 
-.results div h3{
+.scoreBoard div h3{
     margin-left: 1rem;
 }
 
