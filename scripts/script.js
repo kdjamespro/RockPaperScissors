@@ -3,6 +3,7 @@ const moves = ['Rock', 'Paper', 'Scissors'];
 let playerWins = 0;
 let computerWins = 0;
 
+
 // Returns a random move of a computer from the set of possible moves
 function computerPlay()
 {
@@ -74,31 +75,36 @@ function playRound(playerSelection, computerSelection)
 }
 
 // Starts the game 
-function game()
+function gameStart()
 {
+    updateScore();
     let playerSelection = '';
-    let buttons = document.querySelectorAll('.rps-choice');
+    buttons = document.querySelectorAll('.rps-choice');
+    console.log(buttons);
     buttons.forEach(button => {
+        button.disabled = false;
         button.addEventListener('click', (e) =>
         {
             console.log(e);
             playerSelection = e.target.value;
+            console.log(playerSelection);
+            const computerSelection = computerPlay();;
+            playRound(playerSelection, computerSelection)
+            updateScore();
         });
     });
-    for(i = 0; i < 5; i++)
-    {
-        console.log(playerSelection);
-        const computerSelection = computerPlay();;
-        playRound(playerSelection, computerSelection)
-    }
-    finalScore();
 }
 
 // outputs the final score
-function finalScore()
+function updateScore()
 {
-    let result = `The player score is: ${playerWins}\nThe computer score is: ${computerWins}`;
-    console.log(result);
+    const playerScore = document.querySelector('.playerScore');
+    const computerScore = document.querySelector('.computerScore');
+    playerScore.textContent = playerWins;
+    computerScore.textContent = computerWins;
 }
 
-game();
+
+
+let start = document.querySelector('.startButton');
+start.addEventListener('click', () => gameStart());
