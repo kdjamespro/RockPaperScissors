@@ -83,11 +83,13 @@ function playRound(playerSelection, computerSelection)
 // Starts the game 
 function gameStart()
 {
+    resetScore();
     updateScore();
     let playerSelection = '';
     console.log(buttons);
     buttons.forEach(button => {
         button.disabled = false;
+        narration.textContent = 'Choose a your weapon!';
         button.addEventListener('click', (e) =>
         {
             console.log(e);
@@ -100,12 +102,27 @@ function gameStart()
     });
 }
 
-// outputs the final score
 function updateScore()
 {
+    if(playerWins === 5)
+    {
+        ;
+    }
+    else if(computerWins === 5)
+    {
+        ;
+    }
     playerScore.textContent = playerWins;
     computerScore.textContent = computerWins;
 }
+
+function resetScore()
+{
+    playerWins = 0;
+    computerWins = 0;
+}
+
+
 
 
 
