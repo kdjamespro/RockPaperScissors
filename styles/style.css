@@ -7,16 +7,103 @@ html, *{
     background-color: black;
 }
 
+h1{
+    text-align: center;
+}
+
+html, body{
+    height: 100%;
+}
+
+/** Score Menu **/
+
+.results{
+    display: none;
+}
+
 .scoreBoard{
     display: flex;
     justify-content: space-around;
+}
+
+.board{
+    align-items: center;
 }
 
 .scoreBoard div{
     display: flex;
 }
 
-.scoreBoard div h3{
-    margin-left: 1rem;
+.circle{
+    margin-left: 0.30rem;
+    height: 20px;
+    width: 20px;
+    border: 2px solid #DFDFDF;
+    background-color: #FF0800;
+    border-radius: 50%;
+    display: inline-block;
 }
+
+/** Start **/
+.start{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    min-height: 50%;
+}
+
+.startButton{
+    font-size: 30px;
+    border: none;
+}
+
+
+/** Choices Menu **/
+
+.rps-menu{
+    width: 50%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rps-choice{
+    font-size: 20px;
+    display: flex;
+    margin-left: 0.75rem;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    border: none;
+}
+
+.choice{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.arrow-con{
+    align-self: center;
+    position: block;
+    opacity: 0;
+    margin-right: 0.75rem;
+}
+
+.rps-choice:hover a{
+    opacity: 1;
+    display: flex;
+}
+
+.arrow {
+    display: inline-block;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
 

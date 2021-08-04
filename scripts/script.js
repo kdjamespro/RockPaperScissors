@@ -1,13 +1,16 @@
 // Initialize the list of possible moves
 const moves = ['Rock', 'Paper', 'Scissors'];
-let playerWins = 0;
-let computerWins = 0;
+let playerLives = 5;
+let computerLives = 5;
 
 // Initialize the DOM object we need to access
 const buttons = document.querySelectorAll('.rps-choice');
 const playerScore = document.querySelector('.playerScore');
 const computerScore = document.querySelector('.computerScore');
 const narration = document.querySelector('.narration');
+const menu = document.querySelector('.rps-menu');
+const hp = document.querySelector('.results');
+const start = document.querySelector('.start');
 
 
 // Returns a random move of a computer from the set of possible moves
@@ -28,13 +31,15 @@ function playRound(playerSelection, computerSelection)
     if(playerSelection === 'rock')
     {
         if(computerSelection === 'scissors')
-        {
-            playerWins += 1;
+        {   
+            updateLives('computer', computerLives);
+            computerLives -= 1;
             return 'You Win! Rock beats Scissors';
         }
         else if(computerSelection === 'paper')
         {
-            computerWins += 1;
+            updateLives('player', playerLives);
+            playerLives -= 1;
             return 'You Lose! Paper beats Rock';
         }
         else
@@ -46,12 +51,14 @@ function playRound(playerSelection, computerSelection)
     {
         if(computerSelection === 'paper')
         {
-            playerWins += 1;
+            updateLives('computer', computerLives);
+            computerLives -= 1;
             return 'You Win! Scissors beats Paper';
         }
         else if(computerSelection === 'rock')
         {
-            computerWins += 1;
+            updateLives('player', playerLives);
+            playerLives -= 1;
             return 'You Lose! Rock beats Scissors';
         }
         else
@@ -63,12 +70,14 @@ function playRound(playerSelection, computerSelection)
     {
         if(computerSelection === 'rock')
         {
-            playerWins += 1;
+            updateLives('computer', computerLives);
+            playerLives -= 1;
             return 'You Win! Paper beats Rock';
         }
         else if(computerSelection === 'scissors')
         {
-            computerWins += 1;
+            updateLives('player', playerLives);
+            computerLives -= 1;
             return 'You Lose! Scissors beats Paper';
         }
         else (computerSelection === 'paper')
@@ -83,50 +92,46 @@ function playRound(playerSelection, computerSelection)
 // Starts the game 
 function gameStart()
 {
-    resetScore();
-    updateScore();
+    resetLives();
     let playerSelection = '';
-    console.log(buttons);
     buttons.forEach(button => {
         button.disabled = false;
         narration.textContent = 'Choose a your weapon!';
         button.addEventListener('click', (e) =>
         {
-            console.log(e);
             playerSelection = e.target.value;
             console.log(playerSelection);
             const computerSelection = computerPlay();;
-            narration.textContent = playRound(playerSelection, computerSelection)
-            updateScore();
+            narration.textContent = playRound(playerSelection, computerSelection);
         });
     });
 }
 
-function updateScore()
+function updateLives(whoLose, lives)
 {
-    if(playerWins === 5)
-    {
-        ;
-    }
-    else if(computerWins === 5)
-    {
-        ;
-    }
-    playerScore.textContent = playerWins;
-    computerScore.textContent = computerWins;
+   if(whoLose === 'computer')
+   {
+        let lose = document.querySelector(`.cl${lives}`);
+        lose.style.backgroundColor = 'black';
+   }
+   else if(whoLose === 'player')
+   {
+        let lose = document.querySelector(`.hl${lives}`);
+        lose.style.backgroundColor = 'black';
+   }
 }
 
-function resetScore()
+function resetLives()
 {
-    playerWins = 0;
-    computerWins = 0;
+    playerWins = 5;
+    computerWins = 5;
 }
 
 
 
-
-
-let start = document.querySelector('.startButton');
-start.addEventListener('click', () => {
+document.body.addEventListener('click', () => {
+    hp.style.display = 'block';
+    menu.style.display = "flex";
+    start.style.display = "none";
     gameStart()
-});
+}, true);
