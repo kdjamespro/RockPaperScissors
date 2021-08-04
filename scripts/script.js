@@ -71,13 +71,13 @@ function playRound(playerSelection, computerSelection)
         if(computerSelection === 'rock')
         {
             updateLives('computer', computerLives);
-            playerLives -= 1;
+            computerLives -= 1;
             return 'You Win! Paper beats Rock';
         }
         else if(computerSelection === 'scissors')
         {
             updateLives('player', playerLives);
-            computerLives -= 1;
+            playerLives -= 1;
             return 'You Lose! Scissors beats Paper';
         }
         else (computerSelection === 'paper')
@@ -94,16 +94,14 @@ function gameStart()
 {
     resetLives();
     let playerSelection = '';
+    let play = function(event){
+        playerSelection = event.target.value;
+        const computerSelection = computerPlay();
+        narration.textContent = playRound(playerSelection, computerSelection);
+    };
     buttons.forEach(button => {
-        button.disabled = false;
-        narration.textContent = 'Choose a your weapon!';
-        button.addEventListener('click', (e) =>
-        {
-            playerSelection = e.target.value;
-            console.log(playerSelection);
-            const computerSelection = computerPlay();;
-            narration.textContent = playRound(playerSelection, computerSelection);
-        });
+        narration.textContent = 'Choose your weapon!';
+        button.addEventListener('click', play);
     });
 }
 
@@ -119,6 +117,10 @@ function updateLives(whoLose, lives)
         let lose = document.querySelector(`.hl${lives}`);
         lose.style.backgroundColor = 'black';
    }
+   if(playerLives == 0 || computerLives == 0)
+   {
+       endGame();
+   }
 }
 
 function resetLives()
@@ -127,11 +129,12 @@ function resetLives()
     computerWins = 5;
 }
 
-
-
-document.body.addEventListener('click', () => {
+function setup()
+{
     hp.style.display = 'block';
     menu.style.display = "flex";
     start.style.display = "none";
-    gameStart()
-}, true);
+    gameStart();
+}
+
+start.addEventListener('click', setup);
