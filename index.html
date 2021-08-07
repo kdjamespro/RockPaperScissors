@@ -11,59 +11,60 @@
 </head>
 <body>
     <h1>Rock Paper Scissors</h1>
-    <div class="results">
-        <div class="scoreBoard">
-            <div class="playerScoreBoard board">
-                <h3>Player Life: </h3>
-                <span class="circle hl1"></span>
-                <span class="circle hl2"></span>
-                <span class="circle hl3"></span>
-                <span class="circle hl4"></span>
-                <span class="circle hl5"></span>
-            </div>
-            <div class="computerScoreBoard board">
-                <h3>Computer Life: </h3>
-                <span class="circle cl1"></span>
-                <span class="circle cl2"></span>
-                <span class="circle cl3"></span>
-                <span class="circle cl4 "></span>
-                <span class="circle cl5"></span>
-            </div>
-        </div>
-    </div>
-
     <div class="start">
         <button class="startButton">Click Here To Start The Game</button>
     </div>
 
-    <div class="human">
-        
-    </div>
-
-    <div class="rps-menu">
-        <div class="choice">
-            <button class="rps-choice" value="rock">
-                <a class="arrow-con"><i class="arrow"></i></a>
-                Rock
-            </button>
+    <div class="display">
+        <div class="results">
+            <div class="scoreBoard">
+                <div class="playerScoreBoard board">
+                    <h3>Player Life: </h3>
+                    <span class="circle hl1"></span>
+                    <span class="circle hl2"></span>
+                    <span class="circle hl3"></span>
+                    <span class="circle hl4"></span>
+                    <span class="circle hl5"></span>
+                </div>
+                <div class="computerScoreBoard board">
+                    <h3>Computer Life: </h3>
+                    <span class="circle cl1"></span>
+                    <span class="circle cl2"></span>
+                    <span class="circle cl3"></span>
+                    <span class="circle cl4 "></span>
+                    <span class="circle cl5"></span>
+                </div>
+            </div>
         </div>
-        <div class="choice">
-            <button class="rps-choice" value="paper">
-                <a class="arrow-con"><i class="arrow"></i></a>
-                Paper
-            </button>
+        <div class="human">
+            <canvas class="human-player"></canvas>
+            <canvas class="computer"></canvas>
         </div>
-        <div class="choice">
-            <a class="arrow-con"><i class="arrow"></i></a>
-            <button class="rps-choice" value="scissors">
+        <div class="rps-menu">
+            <div class="choice">
+                <button class="rps-choice" value="rock">
+                    <a class="arrow-con"><i class="arrow"></i></a>
+                    Rock
+                </button>
+            </div>
+            <div class="choice">
+                <button class="rps-choice" value="paper">
+                    <a class="arrow-con"><i class="arrow"></i></a>
+                    Paper
+                </button>
+            </div>
+            <div class="choice">
                 <a class="arrow-con"><i class="arrow"></i></a>
-                Scissors
-            </button>
+                <button class="rps-choice" value="scissors">
+                    <a class="arrow-con"><i class="arrow"></i></a>
+                    Scissors
+                </button>
+            </div>
         </div>
-    </div>
-
-    <div class="narration-container">
-        <p class="narration"></p>
+    
+        <div class="narration-container">
+            <p class="narration"></p>
+        </div>
     </div>
 
 </body>

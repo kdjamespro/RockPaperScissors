@@ -18,7 +18,7 @@ html, body{
 /** Score Menu **/
 
 .results{
-    display: none;
+    display: block;
 }
 
 .scoreBoard{
@@ -57,12 +57,29 @@ html, body{
     border: none;
 }
 
+.display{
+    display: none;
+}
+
+/** Human Player **/
+.human{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+.human-player, .computer{
+    width: 550px;
+    height: 550px;
+    border: 5px solid white;
+    margin-bottom: 2.5rem;
+}
+
 
 /** Choices Menu **/
 
 .rps-menu{
     width: 50%;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -95,6 +112,10 @@ html, body{
 .rps-choice:hover a{
     opacity: 1;
     display: flex;
+}
+
+.narration-container{
+    text-align: center;
 }
 
 .arrow {
