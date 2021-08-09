@@ -101,8 +101,8 @@ function playRound(playerSelection, computerSelection)
         else if(computerSelection === 'scissors')
         {
             updateLives('player', playerLives);
+            playerLives -= 1;
             computerState = 'attack';
-            playerState = 'hurt';
             playerState = 'hurt';
             return 'You Lose! Scissors beats Paper';
         }
@@ -118,7 +118,7 @@ function playRound(playerSelection, computerSelection)
 const spriteWidth = 550;
 const spriteHeight = 550;
 let gameFrame = 0;
-const delayFrames = 10;
+const delayFrames = 8;
 const humanAnimations = [];
 const humanStates = [
     {
@@ -249,24 +249,39 @@ function updateLives(whoLose, lives)
    }
    if(playerLives == 0 || computerLives == 0)
    {
-       endGame();
+       if(playerLives == 0)
+       {
+           playerState = 'hurt';
+       }
+       else if(computerLives == 0)
+       {
+           computerState = 'hurt';
+       }
+       //endGame();
    }
 }
 
 function resetLives()
 {
-    playerWins = 5;
-    computerWins = 5;
+    for(let i = 1; i <= 5; i++)
+    {
+        let hLive = document.querySelector(`.hl${i}`);
+        let cLive = document.querySelector(`.cl${i}`);
+        hLive.style.backgroundColor = '#FF0800';
+        cLive.style.backgroundColor = '#FF0800';
+    }
+    playerLives = 5;
+    computerLives = 5;
 }
 
 function setup()
 {
     game.style.display = 'block';
     start.style.display = "none";
-
     initializeAnimations();
     animate();
     gameStart();
 }
+
 
 start.addEventListener('click', setup);
