@@ -3,6 +3,7 @@ const moves = ['Rock', 'Paper', 'Scissors'];
 let playerLives = 5;
 let computerLives = 5;
 let playerState = 'idle';
+let computerState = 'idle';
 
 // Initialize the DOM object we need to access
 const buttons = document.querySelectorAll('.rps-choice');
@@ -15,11 +16,15 @@ const game = document.querySelector('.display');
 const start = document.querySelector('.start');
 const hcanvas = document.querySelector('.human-player');
 const hctx = hcanvas.getContext('2d');
-const CANVAS_HEIGHT = hcanvas.height = 550;
-const CANVAS_WIDTH = hcanvas.width = 550;
+const cCanvas = document.querySelector('.computer');
+const cCtx = cCanvas.getContext('2d');
+const CANVAS_HEIGHT = hcanvas.height = cCanvas.height = 550;
+const CANVAS_WIDTH = hcanvas.width = cCanvas.width = 550;
 
 const playerImage = new Image();
 playerImage.src = 'images/human.png';
+const computerImage = new Image();
+computerImage.src = 'images/computer.png';
 
 
 // Returns a random move of a computer from the set of possible moves
@@ -44,12 +49,14 @@ function playRound(playerSelection, computerSelection)
             updateLives('computer', computerLives);
             computerLives -= 1;
             playerState = 'attack';
+            computerState = 'hurt';
             return 'You Win! Rock beats Scissors';
         }
         else if(computerSelection === 'paper')
         {
             updateLives('player', playerLives);
             playerLives -= 1;
+            computerState = 'attack';
             playerState = 'hurt';
             return 'You Lose! Paper beats Rock';
         }
@@ -65,12 +72,14 @@ function playRound(playerSelection, computerSelection)
             updateLives('computer', computerLives);
             computerLives -= 1;
             playerState = 'attack';
+            computerState = 'hurt';
             return 'You Win! Scissors beats Paper';
         }
         else if(computerSelection === 'rock')
         {
             updateLives('player', playerLives);
             playerLives -= 1;
+            computerState = 'attack';
             playerState = 'hurt';
             return 'You Lose! Rock beats Scissors';
         }
@@ -86,12 +95,14 @@ function playRound(playerSelection, computerSelection)
             updateLives('computer', computerLives);
             computerLives -= 1;
             playerState = 'attack';
+            computerState = 'hurt';
             return 'You Win! Paper beats Rock';
         }
         else if(computerSelection === 'scissors')
         {
             updateLives('player', playerLives);
-            playerLives -= 1;
+            computerState = 'attack';
+            playerState = 'hurt';
             playerState = 'hurt';
             return 'You Lose! Scissors beats Paper';
         }
@@ -124,35 +135,85 @@ const humanStates = [
     }
 ];
 
-humanStates.forEach((state, index) => {
-    let frames = {
-        loc: [],
+const computerAnimations = [];
+const computerStates = [
+    {
+        name: 'idle',
+        frames: 10,
+    },
+    {
+        name: 'attack',
+        frames: 10,
+    },
+    {
+        name: 'hurt',
+        frames: 10,
     }
-    for(let j = 0; j <state.frames; j++){
-        let postionX = j * spriteWidth;
-        let positionY = index * spriteHeight;
-        frames.loc.push({x: postionX, y: positionY});
-    }
-    humanAnimations[state.name] = frames;
-});
+];
+
+
+function initializeAnimations()
+{
+    humanStates.forEach((state, index) => {
+        let frames = {
+            loc: [],
+        }
+        for(let j = 0; j <state.frames; j++){
+            let postionX = j * spriteWidth;
+            let positionY = index * spriteHeight;
+            frames.loc.push({x: postionX, y: positionY});
+        }
+        humanAnimations[state.name] = frames;
+    });
+
+    computerStates.forEach((state, index) => {
+        let frames = {
+            loc: [],
+        }
+        for(let j = 0; j <state.frames; j++){
+            let postionX = j * spriteWidth;
+            let positionY = index * spriteHeight;
+            frames.loc.push({x: postionX, y: positionY});
+        }
+        computerAnimations[state.name] = frames;
+    });
+}
+
 console.log(humanAnimations);
 
 function animate()
 {
     hctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    let numFrames = humanAnimations[playerState].loc.length;
-    let position = Math.floor(gameFrame/delayFrames) % numFrames;
-    let frameX = spriteWidth * position
-    let frameY = humanAnimations[playerState].loc[position].y;
-    hctx.drawImage(playerImage, frameX, frameY,
+    cCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    let hNumFrames = humanAnimations[playerState].loc.length;
+    let hPosition = Math.floor(gameFrame/delayFrames) % hNumFrames;
+    let hFrameX = spriteWidth * hPosition
+    let hFrameY = humanAnimations[playerState].loc[hPosition].y;
+
+    let cNumFrames = computerAnimations[computerState].loc.length;
+    let cPosition = Math.floor(gameFrame/delayFrames) % cNumFrames;
+    let cFrameX = spriteWidth * cPosition;
+    let cFrameY = computerAnimations[computerState].loc[cPosition].y;
+
+    hctx.drawImage(playerImage, hFrameX, hFrameY,
         spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     
+    cCtx.translate(0 + spriteWidth, 0);
+    cCtx.scale(-1, 1);
+    cCtx.drawImage(computerImage, cFrameX, cFrameY,
+        spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);    
+    cCtx.setTransform(1,0,0,1,0,0);
+
+
     gameFrame += 1;
+
     if(playerState == 'attack' || playerState == 'hurt')
     {
-        if((position + 1) % numFrames == 0)
+        if((hPosition + 1) == 10)
         {
             playerState = 'idle';
+            computerState = 'idle';
         }
     }
     requestAnimationFrame(animate);
@@ -203,7 +264,8 @@ function setup()
     game.style.display = 'block';
     start.style.display = "none";
 
-    animate('idle');
+    initializeAnimations();
+    animate();
     gameStart();
 }
 
