@@ -50,15 +50,42 @@ html, body{
     align-items: center;
     display: flex;
     min-height: 50%;
+    flex-direction: column;
 }
 
 .startButton{
+    margin-top: 1rem;
+    padding: 15px 20px;
     font-size: 30px;
-    border: none;
+    border: 4px solid #FAFAFA;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.5s;
 }
+
+.startButton:hover{
+    transform: scale(1.01);
+    background-color: dimgray;
+    transition: 0.5s;
+}
+
+
 
 .display{
     display: none;
+}
+
+/** Popup **/
+.popup{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0s;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    background-color: rgb(255, 255, 255, 0.6);
 }
 
 /** Human Player **/

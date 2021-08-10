@@ -4,6 +4,7 @@ let playerLives = 5;
 let computerLives = 5;
 let playerState = 'idle';
 let computerState = 'idle';
+let pause = false;
 
 // Initialize the DOM object we need to access
 const buttons = document.querySelectorAll('.rps-choice');
@@ -14,12 +15,14 @@ const menu = document.querySelector('.rps-menu');
 const hp = document.querySelector('.results');
 const game = document.querySelector('.display');
 const start = document.querySelector('.start');
+const startButton = document.querySelector('.startButton');
 const hcanvas = document.querySelector('.human-player');
 const hctx = hcanvas.getContext('2d');
 const cCanvas = document.querySelector('.computer');
 const cCtx = cCanvas.getContext('2d');
 const CANVAS_HEIGHT = hcanvas.height = cCanvas.height = 550;
 const CANVAS_WIDTH = hcanvas.width = cCanvas.width = 550;
+let results;
 
 const playerImage = new Image();
 playerImage.src = 'images/human.png';
@@ -46,16 +49,16 @@ function playRound(playerSelection, computerSelection)
     {
         if(computerSelection === 'scissors')
         {   
-            updateLives('computer', computerLives);
             computerLives -= 1;
+            updateLives('computer', computerLives);
             playerState = 'attack';
             computerState = 'hurt';
             return 'You Win! Rock beats Scissors';
         }
         else if(computerSelection === 'paper')
         {
-            updateLives('player', playerLives);
             playerLives -= 1;
+            updateLives('player', playerLives);
             computerState = 'attack';
             playerState = 'hurt';
             return 'You Lose! Paper beats Rock';
@@ -69,16 +72,16 @@ function playRound(playerSelection, computerSelection)
     {
         if(computerSelection === 'paper')
         {
-            updateLives('computer', computerLives);
             computerLives -= 1;
+            updateLives('computer', computerLives);
             playerState = 'attack';
             computerState = 'hurt';
             return 'You Win! Scissors beats Paper';
         }
         else if(computerSelection === 'rock')
         {
-            updateLives('player', playerLives);
             playerLives -= 1;
+            updateLives('player', playerLives);
             computerState = 'attack';
             playerState = 'hurt';
             return 'You Lose! Rock beats Scissors';
@@ -92,16 +95,16 @@ function playRound(playerSelection, computerSelection)
     {
         if(computerSelection === 'rock')
         {
-            updateLives('computer', computerLives);
             computerLives -= 1;
+            updateLives('computer', computerLives);
             playerState = 'attack';
             computerState = 'hurt';
             return 'You Win! Paper beats Rock';
         }
         else if(computerSelection === 'scissors')
         {
-            updateLives('player', playerLives);
             playerLives -= 1;
+            updateLives('player', playerLives);
             computerState = 'attack';
             playerState = 'hurt';
             return 'You Lose! Scissors beats Paper';
@@ -111,8 +114,6 @@ function playRound(playerSelection, computerSelection)
             return 'Draw! Both of you chose Paper';
         }
     }
-
-    return "You have selected Invalid Move!"
 }
 
 const spriteWidth = 550;
@@ -183,40 +184,57 @@ console.log(humanAnimations);
 
 function animate()
 {
-    hctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    cCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    let hNumFrames = humanAnimations[playerState].loc.length;
-    let hPosition = Math.floor(gameFrame/delayFrames) % hNumFrames;
-    let hFrameX = spriteWidth * hPosition
-    let hFrameY = humanAnimations[playerState].loc[hPosition].y;
-
-    let cNumFrames = computerAnimations[computerState].loc.length;
-    let cPosition = Math.floor(gameFrame/delayFrames) % cNumFrames;
-    let cFrameX = spriteWidth * cPosition;
-    let cFrameY = computerAnimations[computerState].loc[cPosition].y;
-
-    hctx.drawImage(playerImage, hFrameX, hFrameY,
-        spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    
-    cCtx.translate(0 + spriteWidth, 0);
-    cCtx.scale(-1, 1);
-    cCtx.drawImage(computerImage, cFrameX, cFrameY,
-        spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);    
-    cCtx.setTransform(1,0,0,1,0,0);
-
-
-    gameFrame += 1;
-
-    if(playerState == 'attack' || playerState == 'hurt')
+    if(!pause)
     {
-        if((hPosition + 1) == 10)
+        hctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        cCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+        let hNumFrames = humanAnimations[playerState].loc.length;
+        let hPosition = Math.floor(gameFrame/delayFrames) % hNumFrames;
+        let hFrameX = spriteWidth * hPosition
+        let hFrameY = humanAnimations[playerState].loc[hPosition].y;
+
+        let cNumFrames = computerAnimations[computerState].loc.length;
+        let cPosition = Math.floor(gameFrame/delayFrames) % cNumFrames;
+        let cFrameX = spriteWidth * cPosition;
+        let cFrameY = computerAnimations[computerState].loc[cPosition].y;
+
+        hctx.drawImage(playerImage, hFrameX, hFrameY,
+            spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        
+        cCtx.translate(0 + spriteWidth, 0);
+        cCtx.scale(-1, 1);
+        cCtx.drawImage(computerImage, cFrameX, cFrameY,
+            spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);    
+        cCtx.setTransform(1,0,0,1,0,0);
+
+
+        gameFrame += 1;
+
+        if(playerState == 'attack' || playerState == 'hurt')
         {
-            playerState = 'idle';
-            computerState = 'idle';
+            if((hPosition + 1) == 10)
+            {
+                playerState = 'idle';
+                computerState = 'idle';
+            }
         }
+        requestAnimationFrame(animate);
     }
-    requestAnimationFrame(animate);
+    else
+    {
+        hctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        cCtx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        hctx.drawImage(playerImage, 0, humanAnimations[playerState].loc[9].y,
+            spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        
+        cCtx.translate(0 + spriteWidth, 0);
+        cCtx.scale(-1, 1);
+        cCtx.drawImage(computerImage, 0, computerAnimations[computerState].loc[9].y,
+            spriteWidth, spriteHeight, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);    
+        cCtx.setTransform(1,0,0,1,0,0);
+        cancelAnimationFrame(animate);
+    }
 }
 
 // Starts the game 
@@ -239,12 +257,12 @@ function updateLives(whoLose, lives)
 {
    if(whoLose === 'computer')
    {
-        let lose = document.querySelector(`.cl${lives}`);
+        let lose = document.querySelector(`.cl${lives + 1}`);
         lose.style.backgroundColor = 'black';
    }
    else if(whoLose === 'player')
    {
-        let lose = document.querySelector(`.hl${lives}`);
+        let lose = document.querySelector(`.hl${lives + 1}`);
         lose.style.backgroundColor = 'black';
    }
    if(playerLives == 0 || computerLives == 0)
@@ -252,12 +270,17 @@ function updateLives(whoLose, lives)
        if(playerLives == 0)
        {
            playerState = 'hurt';
+           results = 'You have won the game :)\n' +
+           'Do you want play again?';
        }
        else if(computerLives == 0)
        {
            computerState = 'hurt';
+           results = 'You have lost the game :(\n' +
+           'Do you want play again?';
        }
-       //endGame();
+       pause = true;
+       displayResults();
    }
 }
 
@@ -278,10 +301,23 @@ function setup()
 {
     game.style.display = 'block';
     start.style.display = "none";
+    pause = false;
+    playerState = 'idle';
+    computerState = 'idle';
     initializeAnimations();
     animate();
     gameStart();
 }
 
+function displayResults()
+{    
+    game.style.display = 'none';
+    let endResults = document.createElement('p');
+    endResults.textContent = results;
+    endResults.style.cssText = 'color: white; font-size: 20px;';
 
-start.addEventListener('click', setup);
+    start.insertBefore(endResults, startButton);
+    start.style.display = 'flex';
+}
+
+startButton.addEventListener('click', setup);
